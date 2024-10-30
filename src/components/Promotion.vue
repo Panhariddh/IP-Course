@@ -9,16 +9,22 @@ export default {
         image: String,
         backgroundColor: String,
         width: Number
+    },
+    methods: {
+        shopNow(promotion) {
+            alert(`Let's Shop: ${this.title}`);
+        }
     }
 }
 </script>
 <template>
-    <button class="promotion-card" :style="{ backgroundColor: backgroundColor }" >
+    <div class="promotion-card" :style="{ backgroundColor: backgroundColor }" >
         <h2 class="title">{{ title }}</h2>
         <!-- <button class="shop-btn">Shop Now →</button> -->
         <img :src="image" alt="banner image" class="promotion-img" :style="{ width: width + 'px'}">
-        <Btn/>
-    </button>
+        <!-- Attach click event to the Btn component -->
+        <Btn @click="shopNow(promotion)" />
+    </div>
 </template>
 
 
