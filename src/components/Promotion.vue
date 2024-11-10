@@ -1,61 +1,32 @@
-<script>
-import Btn from './Btn.vue';
-export default {
-    components: {
-        Btn,
-    },
-    props: {
-        title: String,
-        image: String,
-        backgroundColor: String,
-        width: Number
-    },
-    methods: {
-        shopNow(promotion) {
-            alert(`Let's Shop: ${this.title}`);
-        }
-    }
-}
-</script>
 <template>
-    <div class="promotion-card" :style="{ backgroundColor: backgroundColor }" >
-        <h2 class="title">{{ title }}</h2>
-        <!-- <button class="shop-btn">Shop Now →</button> -->
-        <img :src="image" alt="banner image" class="promotion-img" :style="{ width: width + 'px'}">
-        <!-- Attach click event to the Btn component -->
-        <Btn @click="shopNow(promotion)" />
+    <div
+      class="relative top-[20px] w-full h-[310px] flex gap-1 rounded-lg mt-2 overflow-hidden border-2"
+    >
+      <img :src="image" :alt="image" class="absolute scale-50 right-0 bottom-0" />
+      <h2 class="absolute top-20 left-10 text-3xl w-[270px]">
+        {{ title }}
+      </h2>
+      <div class="absolute bottom-10 left-10">
+        <Button @click="shopNow(promotion)" :class="buttonColor">Shop Now</Button>
+      </div>
     </div>
-</template>
-
-
-<style scoped>
-.promotion-card {
-    width: 375px;
-    height: 200px;
-    border: none;
-    padding: 10px;
-    border-radius: 10px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-    position: relative;
-}
-
-.promotion-card :hover {
-    cursor: pointer;
-}
-
-.promotion-img {
-    position: absolute;
-    right: 0px;
-    bottom: 0px;
-}
-.title {
-    text-align: start;
-    color: #253D4E;
-    padding: 0 0 60px 25px;
-    width: 225px;
-}
-/* Hover effect for the Shop Now button */
-.promotion-card:hover .shop-btn {
-    background-color: yellow;
-}
-</style>
+  </template>
+  
+  <script>
+  import Button from "./Button.vue";
+  export default {
+    name: "Promotion",
+    props: {
+      title: String,
+      buttonColor: String,
+      image: String,
+      color: String,
+    },
+    components: { Button },
+    methods: {
+      shopNow(promotion) {
+        alert("Let's shop: " + this.title);
+      },
+    },
+  };
+  </script>
