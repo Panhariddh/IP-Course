@@ -1,61 +1,91 @@
+<script setup>
+import { onMounted, computed } from "vue"; // Add computed here
+import { useProductStore } from "./stores/ProductStore"; // Import the store
+import Category from "./components/Category.vue";
+import Promotion from "./components/Promotion.vue";
+import FeatureCategory from "./components/FeatureCategory.vue";
+
+// Initialize the product store
+const productStore = useProductStore();
+
+// Computed property to get filtered categories from store
+const filteredCategories = computed(() => productStore.filteredCategories);
+
+// Method to select a group and update the store state
+const selectGroup = (group) => {
+  productStore.setSelectedGroup(group);
+};
+
+// Fetch categories, promotions, and groups on component mount
+onMounted(async () => {
+  await productStore.fetchCategories();
+  await productStore.fetchPromotions();
+  await productStore.fetchGroups();
+  console.log("Categories loaded:", productStore.categories);
+  console.log("Promotions loaded:", productStore.promotions);
+  console.log("Groups loaded:", productStore.groups);
+});
+</script>
+
 <template>
-  <div class="flex flex-col">
-    <div
-      class="grid grid-cols-2 gap-2 md:grid-cols-3 lg:grid-cols-10 mt-10 w-full h-auto m-auto items-center mx-2"
-    >
+  <div id="app">
+    <div class="flex flex-col">
+      <div class="flex justify-between mt-5 mx-3">
+        <h1 class="text-3xl">Featured Categories</h1>
+        <div>
+          <div class="flex gap-2 items-center">
+            <!-- Display group names -->
+            <FeatureCategory
+              v-for="(group, index) in productStore.groups"
+              :key="index"
+              :name="group"
+              @click="() => selectGroup(group)"
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="category-card">
+      <!-- Use filteredCategories to show categories based on selected group -->
       <Category
-        v-for="(f, index) in fruits"
+        v-for="(f, index) in filteredCategories" 
         :key="index"
-        :name="f.name"
         :image="f.image"
+        :name="f.name"
         :productCount="f.productCount"
         :color="f.color"
-      ></Category>
+      />
     </div>
-    <div class="flex justify-center gap-2 mx-2">
+
+    <div class="promotion-section">
       <Promotion
-        v-for="(promotion, index) in promotions"
+        v-for="(promotion, index) in productStore.promotions" 
         :key="index"
         :title="promotion.title"
-        :color="promotion.color"
-        :buttonColor="promotion.buttonColor"
+        :description="promotion.description"
         :image="promotion.image"
-      ></Promotion>
+        :color="promotion.color"
+        :width="promotion.width"
+      />
     </div>
   </div>
 </template>
 
-<script setup>
-import axios from "axios";
-import { onMounted, ref } from "vue"; // Import required Vue functions
-import Category from "./components/Category.vue";
-import Promotion from "./components/Promotion.vue";
-// import Promotion from './components/Promotion.vue'; // Uncomment if needed
-
-const fruits = ref([]);
-const promotions = ref([]);
-
-// Fetching data when the component is mounted
-const fetchCategoryData = async () => {
-  try {
-    const response = await axios.get("http://localhost:3000/api/categories");
-    fruits.value = response.data;
-    console.log("Fetched category data:", response.data);
-  } catch (error) {
-    console.error("Error fetching category data:", error);
-  }
-};
-const fetchPromotionsData = async () => {
-  try {
-    const response = await axios.get("http://localhost:3000/api/promotions");
-    promotions.value = response.data;
-    console.log("Fetched Promotions data:", response.data);
-  } catch (error) {
-    console.error("Error fetching Promotions data:", error);
-  }
-};
-
-// Lifecycle hook to fetch data on component mount
-onMounted(fetchCategoryData);
-onMounted(fetchPromotionsData);
-</script>
+<style scoped>
+#app {
+  display: flex;
+  flex-direction: column;
+}
+.category-card {
+  display: flex;
+  padding: 20px;
+  
+}
+.promotion-section {
+  display: flex;
+  justify-content: space-between;
+  padding: 20px;
+  margin-top: 20px;
+}
+</style>
