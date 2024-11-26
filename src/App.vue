@@ -1,72 +1,91 @@
 <script setup>
-import { onMounted, computed } from "vue"; // Add computed here
+import { onMounted, computed, ref } from "vue"; // Add computed here
 import { useProductStore } from "./stores/ProductStore"; // Import the store
 import Category from "./components/Category.vue";
 import Promotion from "./components/Promotion.vue";
-import FeatureCategory from "./components/FeatureCategory.vue";
+import MenuComponent from "./components/MenuComponent.vue";
+import Product from "./components/ProductComponent.vue";
 
-// Initialize the product store
 const productStore = useProductStore();
-
-// Computed property to get filtered categories from store
 const filteredCategories = computed(() => productStore.filteredCategories);
 
-// Method to select a group and update the store state
-const selectGroup = (group) => {
-  productStore.setSelectedGroup(group);
+const categoryByGroup = (group) => {
+  productStore.setSelectedGroup(group); 
+  console.log("Selected group:", group);
 };
 
-// Fetch categories, promotions, and groups on component mount
+const productByGroup = (group) => {
+  selectedGroup.value = group;
+  console.log("Selected group for products:", group);
+};
+const selectedGroup = ref("");
+
 onMounted(async () => {
   await productStore.fetchCategories();
   await productStore.fetchPromotions();
   await productStore.fetchGroups();
+  await productStore.fetchProducts();
   console.log("Categories loaded:", productStore.categories);
   console.log("Promotions loaded:", productStore.promotions);
+  console.log("Products loaded:", productStore.products);
   console.log("Groups loaded:", productStore.groups);
+});
+
+const categoryTitle = "Featured Categories";
+const productTitle = "Popular Products";
+const products = computed(() => {
+  if (selectedGroup.value === "") {
+    return productStore.products; // Show all products if no group is selected
+  }
+  return productStore.getProductsByGroup(selectedGroup.value); // Filtered products
 });
 </script>
 
 <template>
   <div id="app">
-    <div class="flex flex-col">
-      <div class="flex justify-between mt-5 mx-3">
-        <h1 class="text-3xl">Featured Categories</h1>
-        <div>
-          <div class="flex gap-2 items-center">
-            <!-- Display group names -->
-            <FeatureCategory
-              v-for="(group, index) in productStore.groups"
-              :key="index"
-              :name="group"
-              @click="() => selectGroup(group)"
-            />
-          </div>
-        </div>
-      </div>
+     <!-- === Feature Category === -->
+     <div>
+      <MenuComponent
+      :name = "categoryTitle"
+      :group = "productStore.groups"
+      @group-select = "categoryByGroup"
+      />
     </div>
     
-    <div class="category-card">
-      <!-- Use filteredCategories to show categories based on selected group -->
-      <Category
-        v-for="(f, index) in filteredCategories" 
-        :key="index"
-        :image="f.image"
-        :name="f.name"
-        :productCount="f.productCount"
-        :color="f.color"
+      <!-- === Category === -->
+      <div class="category-card">
+      <Category v-for="(filter, index) in filteredCategories" 
+      :key="index" 
+      :image="filter.image" 
+      :name="filter.name"
+      :productCount="filter.productCount" 
+      :color="filter.color"
       />
     </div>
 
-    <div class="promotion-section">
-      <Promotion
-        v-for="(promotion, index) in productStore.promotions" 
-        :key="index"
+      <!-- === Promotion === -->
+      <div class="promotion-section">
+      <Promotion v-for="(promotion, index) in productStore.promotions" 
+        :key="index" 
         :title="promotion.title"
         :description="promotion.description"
-        :image="promotion.image"
+        :image="promotion.image" 
         :color="promotion.color"
         :width="promotion.width"
+        />
+    </div>
+     
+    <!-- === Popular Product === -->
+    <div>
+      <MenuComponent
+      :name = "productTitle"
+      :group = "productStore.groups"
+      @group-select = "productByGroup"
+      />
+    </div>
+    <div>
+      <Product
+      :products="products"
       />
     </div>
   </div>
@@ -74,9 +93,21 @@ onMounted(async () => {
 
 <style scoped>
 #app {
+  width: 2850px;
+  height: auto;
+  padding-bottom: 1000px;
   display: flex;
   flex-direction: column;
 }
+
+.list-cate {
+  display: flex;
+  /* gap: 10px; */
+  flex-direction: row;
+  width: auto;
+}
+
+
 .category-card {
   display: flex;
   padding: 20px;

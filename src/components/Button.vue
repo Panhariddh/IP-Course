@@ -1,17 +1,30 @@
 <template>
-    <div
-      class="flex justify-center items-center w-[150px] h-[40px] rounded-lg hover:scale-95 border-2"
-    >
-      <button
-        class="text-gray-400 py-2 px-4 rounded-lg transition duration-300 ease-in-out"
-      >
-        Shop now ->
-      </button>
-    </div>
-  </template>
-  
-  <script>
-  export default {
-    name: "Button",
-  };
-  </script>
+  <button class="shop-btn">
+      Shop Now →
+  </button>
+</template>
+
+<script>
+export default {
+  data(){
+      return{
+      name: "ShopButton"
+      }
+  },
+};
+
+
+</script>
+
+<style scoped>
+.shop-btn {
+  background-color: #001ec8;
+  color: white;
+  border: none;
+  padding: 10px;
+  border-radius: 5px;
+  position: absolute;
+  left: 35px;
+  bottom: 50px;
+}
+</style>
