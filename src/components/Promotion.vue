@@ -19,12 +19,14 @@ export default {
 }
 </script>
 <template>
+      <router-link to="/productDetail" class="promotion-link">
     <button class="promotion-card" :style="{ color: color }" >
         <h2 class="title">{{ title }}</h2>
         <!-- <button class="shop-btn">Shop Now →</button> -->
         <img :src="image" alt="banner image" class="promotion-img" :style="{ width: width + 'px'}">
         <Button @click="ShopNow()"/>
     </button>
+    </router-link>
 </template>
 
 
@@ -55,5 +57,9 @@ export default {
     padding: 0 0 60px 25px;
     width: 225px;
     
+}
+.promotion-link {
+  text-decoration: none;
+  display: block;
 }
 </style>

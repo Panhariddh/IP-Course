@@ -1,9 +1,11 @@
 <template>
+  <router-link to="/pageHeader" class="category-link">
   <button class="category" :style="{ color: color }">
       <img :src="image" alt="promotion image" class="promotion-img">
       <h3 class="name">{{ name }}</h3>
       <p class="productCount">{{ productCount }} items</p>
   </button>
+  </router-link>
 </template>
 
 <script>
@@ -43,4 +45,9 @@ export default {
 .productCount{
   color:#B6B6B6;
 }
+.category-link {
+  text-decoration: none; 
+  display: block;
+}
+
 </style>

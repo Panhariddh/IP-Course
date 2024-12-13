@@ -1,4 +1,5 @@
 <template>
+    <router-link to="/productDetail" class="product-link">
     <div class="product-list">
       <div class="product" v-for="product in products" :key="product.id">
         <!-- Product Tag -->
@@ -55,6 +56,7 @@
         </div>
       </div>
     </div>
+    </router-link>
   </template>
 
   <script>
@@ -198,4 +200,8 @@
     justify-content: space-between;
     margin-top: 10px;
   }
+  .product-link {
+  text-decoration: none;
+  display: block;
+}
   </style>
