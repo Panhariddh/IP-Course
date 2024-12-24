@@ -1,47 +1,63 @@
 <template>
-  <div class="layout">
-    <!-- Header -->
-    <HeaderComponent />
+  <div>
+    <header>
+      <div>Header</div>
+      <nav>
+        <router-link to="/page1" active-class="active-link">Page 1</router-link>
+        <router-link to="/page2" active-class="active-link">Page 2</router-link>
+        <router-link to="/page3" active-class="active-link">Page 3</router-link>
+      </nav>
+    </header>
 
-    <div class="content">
-      <!-- Menu -->
-      <MenuComponent />
-
-      <!-- Main Content -->
+    <main>
       <router-view />
-    </div>
+    </main>
 
-    <!-- Footer -->
-    <FooterComponent />
+    <footer>
+      <p>Footer</p>
+    </footer>
   </div>
 </template>
 
 <script>
-import HeaderComponent from './components/HeaderComponent.vue';
-import FooterComponent from './components/FooterComponent.vue';
-import MenuComponent from './components/MenuComponent.vue';
 
-export default {
-  components: {
-    HeaderComponent,
-    MenuComponent,
-    FooterComponent,
-  },
-};
 </script>
 
 <style scoped>
-/* Same styles as before */
-.layout {
+header {
+  background-color: #2aaa5f;
+  padding: 15px; 
+  text-align: center;
+  border-bottom: 1px solid #ddd;
+  width: 100%; 
   display: flex;
-  flex-direction: column;
-  width: 100vw;
-  height: 100vh;
+  justify-content: space-between; 
+  align-items: center; 
+  box-sizing: border-box; 
 }
 
-.content {
-  display: flex;
-  flex: 1;
+header nav {
+  margin-left: auto; 
 }
 
+header nav a {
+  text-decoration: none; 
+  padding: 10px 20px; 
+  font-size: 16px;
+  color: white; 
+}
+
+header nav a.active-link {
+  color: red; 
+}
+
+footer {
+  background-color: #2aaa5f;
+  padding: 15px; 
+  text-align: center;
+  border-top: 1px solid #ddd;
+  width: 100%; 
+  box-sizing: border-box;
+  font-size: 18px; 
+}
 </style>

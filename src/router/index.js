@@ -1,33 +1,49 @@
 import { createRouter, createWebHistory } from 'vue-router';
+import Page1 from '../views/Page1.vue';
+import Page2 from '../views/Page2.vue';
+import Page3 from '../views/Page3.vue';
+import SectionPage from '@/components/SectionPage.vue';
 
-// Import views for routing
-import Page1 from '@/components/Page1.vue';
-import Page2 from '@/components/Page2.vue';
-import Page3 from '@/components/Page3.vue';
+const routes = [
+  {
+    path: '/',
+    redirect: '/page1',
+  },
+  {
+    path: '/page1',
+    component: Page1,
+    children: [
+      {
+        path: 'section/:id',
+        component: SectionPage,
+      },
+    ],
+  },
+  {
+    path: '/page2',
+    component: Page2,
+    children: [
+      {
+        path: 'section/:id',
+        component: SectionPage,
+      },
+    ],
+  },
+  {
+    path: '/page3',
+    component: Page3,
+    children: [
+      {
+        path: 'section/:id',
+        component: SectionPage,
+      },
+    ],
+  },
+];
 
 const router = createRouter({
-  history: createWebHistory(import.meta.env.BASE_URL),
-  routes: [
-    {
-      path: '/', // Default route
-      redirect: '/page1', // Redirect to Page 1
-    },
-    {
-      path: '/page1',
-      name: 'Page1',
-      component: Page1, // Render Page1.vue
-    },
-    {
-      path: '/page2',
-      name: 'Page2',
-      component: Page2, // Render Page2.vue
-    },
-    {
-      path: '/page3',
-      name: 'Page3',
-      component: Page3, // Render Page3.vue
-    },
-  ],
+  history: createWebHistory(),
+  routes,
 });
 
 export default router;
